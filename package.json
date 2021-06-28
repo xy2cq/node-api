@@ -1,0 +1,22 @@
+{
+  "name": "node-api",
+  "version": "v0.0.1",
+  "description": "node api",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf build && rimraf assets-cache",
+    "prebuild": "npm run clean",
+    "start": "node start.js"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "cq",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "socket.io-client": "2.2.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  }
+}
