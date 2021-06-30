@@ -1,4 +1,22 @@
 import io from 'socket.io-client'
+
+function getScoreQueryStr () {
+  let d = {
+      token: '',
+      listIds: '2349570'
+  }
+  return JSON.stringify(d)
+}
+
+function getMatchQueryStr() {
+  let d = {
+      token: '',
+      listId: '2349570'
+  }
+  return JSON.stringify(d)
+}
+
+
 const socket = io('wss://scorebot-secure.hltv.org', {
   path: '',
   // query: {
@@ -20,10 +38,16 @@ const socket = io('wss://scorebot-secure.hltv.org', {
 //   reconnectionDelayMax: 10000,
 //   transports: ['websocket']
 // })
-
+// console.log(getScoreQueryStr(), getMatchQueryStr())
 socket.on('connect', () => {
   console.log('connect success')
+  console.log(getScoreQueryStr(),123123123)
+  // socket.emit('readyForScores', getScoreQueryStr())
+  // socket.emit('readyForMatch', getMatchQueryStr())
 })
+
+socket.emit('readyForScores',  getScoreQueryStr())
+socket.emit('readyForMatch',  getMatchQueryStr())
 
 socket.on('connect_error', (err) => {
   console.log('connect error', err)

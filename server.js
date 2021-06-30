@@ -3,6 +3,7 @@
 
 import hero from './hero'
 import hlv from './hlv'
+import hlvfile from './hlvfile'
 const http = require('http')
 const nUrl = require('url')
 
@@ -38,6 +39,13 @@ const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(hlv))
         return;
+    }
+
+    if (method === 'GET' && url.pathname === '/api/hlvfile') {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(hlvfile))
+        return
     }
 
     // 没有匹配其他分支的话，执行以下逻辑
