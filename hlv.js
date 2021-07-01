@@ -4,7 +4,7 @@ const redisDb = require('./redis')
 function getScoreQueryStr () {
   let d = {
       token: '',
-      listIds: '2349570'
+      listIds: '2349777'
   }
   return JSON.stringify(d)
 }
@@ -12,7 +12,7 @@ function getScoreQueryStr () {
 function getMatchQueryStr() {
   let d = {
       token: '',
-      listId: '2349570'
+      listId: '2349777'
   }
   return JSON.stringify(d)
 }
@@ -55,20 +55,37 @@ socket.on('connect_error', (err) => {
 })
 
 socket.on('score', (scoreStr) => {
-  //console.log('score', scoreStr)
+  redisDb.set('0','scoreStr2349777', JSON.stringify(scoreStr), '2021-7-1', function (err, result) {
+    if (err) {
+      console.log('redis设置失败:' + err)       
+    } else {
+      console.log(result)       
+    }
+  })
 })
 
 socket.on('fullLog', (fullLogStr) => {
-  //console.log('fullLog', fullLogStr)
+  redisDb.set('0','fullLogStr2349777', JSON.stringify(fullLogStr), '2021-7-1', function (err, result) {
+    if (err) {
+      console.log('redis设置失败:' + err)       
+    } else {
+      console.log(result)       
+    }
+  })
 })
 
 socket.on('log', (fullLogStr) => {
-  //console.log('log', fullLogStr)
+  redisDb.set('0','log2349777', JSON.stringify(fullLogStr), '2021-7-1', function (err, result) {
+    if (err) {
+      console.log('redis设置失败:' + err)       
+    } else {
+      console.log(result)       
+    }
+  })
 })
 
 socket.on('scoreboard', (jsonStr) => {
-  console.log('scoreboard', JSON.stringify(jsonStr))
-  redisDb.set('0','socreboard', JSON.stringify(jsonStr), '2021-7-1', function (err, result) {
+  redisDb.set('0','socreboard2349777', JSON.stringify(jsonStr), '2021-7-1', function (err, result) {
     if (err) {
       console.log('redis设置失败:' + err)       
     } else {
@@ -76,15 +93,13 @@ socket.on('scoreboard', (jsonStr) => {
     }
   })
 
-  redisDb.get('0', 'socreboard', function (err, result) {
+  redisDb.get('0', 'socreboard2349777', function (err, result) {
     if(err){
       console.log('redis geterror', err)
     }else{	
       console.log(result)
     }
-  })
-
-  
+  })  
 })
 
 // const socket = io('wss://saas-socket.joidata.com', {

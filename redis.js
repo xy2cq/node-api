@@ -40,16 +40,36 @@ redisDb.set = function (dbNum,key,value,expire,callback) {
         }
 
     })
-};
+}
+
+redisDb.setList = function (dbNum,key,value,expire,callback) {
+  client.select(dbNum,function (err) {
+      if (err){
+          logger.error('redis set 选库失败：'+err);
+      }else {
+          client.send_command('lpush',[key,value],function (err,result) {
+              if (err){
+                  logger.error('redis插入失败：'+err);
+                  callback(err,null);
+                  return
+              }
+              if (!isNaN(expire) && expire>0){
+                  client.expire(key, parseInt(expire));
+              }
+              callback(null,result);
+          })
+      }
+  })
+}
 
 redisDb.get = function (dbNum,key,callback) {
     client.select(dbNum,function (err) {
         if (err){
-            logger.error('redis get 选库失败：'+err);
+            logger.error('redis get 选库失败：'+err)
         }else {
             client.get(key,function (err,result) {
                 if (err){
-                    logger.error('redis获取失败：'+err);
+                    logger.error('redis获取失败：'+err)
                     callback(err,null);
                     return
                 }
@@ -58,22 +78,5 @@ redisDb.get = function (dbNum,key,callback) {
         }
     })
 }
-
-redisDb.get = function (dbNum,key,callback) {
-  client.select(dbNum,function (err) {
-      if (err){
-          logger.error('redis get 选库失败：'+err);
-      }else {
-          client.get(key,function (err,result) {
-              if (err){
-                  logger.error('redis获取失败：'+err);
-                  callback(err,null);
-                  return
-              }
-              callback(null,result);
-          })
-      }
-  })
-};
 
 module.exports = redisDb
