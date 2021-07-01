@@ -1,4 +1,5 @@
 import io from 'socket.io-client'
+const redisDb = require('./redis')
 
 function getScoreQueryStr () {
   let d = {
@@ -54,19 +55,36 @@ socket.on('connect_error', (err) => {
 })
 
 socket.on('score', (scoreStr) => {
-  console.log('score', scoreStr)
+  //console.log('score', scoreStr)
 })
 
 socket.on('fullLog', (fullLogStr) => {
-  console.log('fullLog', fullLogStr)
+  //console.log('fullLog', fullLogStr)
 })
 
 socket.on('log', (fullLogStr) => {
-  console.log('log', fullLogStr)
+  //console.log('log', fullLogStr)
 })
 
 socket.on('scoreboard', (jsonStr) => {
-  console.log('scoreboard', jsonStr)
+  console.log('scoreboard', JSON.stringify(jsonStr))
+  redisDb.set('0','socreboard', JSON.stringify(jsonStr), '2021-7-1', function (err, result) {
+    if (err) {
+      console.log('redis设置失败:' + err)       
+    } else {
+      console.log(result)       
+    }
+  })
+
+  redisDb.get('0', 'socreboard', function (err, result) {
+    if(err){
+      console.log('redis geterror', err)
+    }else{	
+      console.log(result)
+    }
+  })
+
+  
 })
 
 // const socket = io('wss://saas-socket.joidata.com', {
@@ -92,6 +110,8 @@ socket.on('scoreboard', (jsonStr) => {
 //   const newData = JSON.parse(data)
 //   console.log('data',newData)
 // })
+
+
 
 export const hlv = {
   "code": 0,
