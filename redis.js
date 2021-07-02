@@ -79,4 +79,21 @@ redisDb.get = function (dbNum,key,callback) {
     })
 }
 
+redisDb.getList = function (dbNum,key,callback) {
+  client.select(dbNum,function (err) {
+      if (err){
+          logger.error('redis get 选库失败：'+err)
+      }else {
+          client.rpop(key,function (err,result) {
+              if (err){
+                  logger.error('redis获取失败：'+err)
+                  callback(err,null);
+                  return
+              }
+              callback(null,result);
+          })
+      }
+  })
+}
+
 module.exports = redisDb

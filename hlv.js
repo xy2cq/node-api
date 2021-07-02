@@ -93,7 +93,15 @@ socket.on('scoreboard', (jsonStr) => {
     }
   })
 
-  redisDb.get('0', 'socreboard2349777', function (err, result) {
+  redisDb.setList('0','listsocreboard2349777', JSON.stringify(jsonStr), '2021-7-1', function (err, result) {
+    if (err) {
+      console.log('redis设置失败:' + err)       
+    } else {
+      console.log(result)       
+    }
+  })
+
+  redisDb.getList('0', 'listsocreboard2349777', function (err, result) {
     if(err){
       console.log('redis geterror', err)
     }else{	
